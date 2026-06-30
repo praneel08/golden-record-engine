@@ -1,0 +1,13 @@
+{
+  "emp_name_first": "Andrej",
+  "emp_name_last": "Karpathy",
+  "contact_email": "andrej.k@example.com",
+  "contact_phone": "(650) 555-0199",
+  "github_username": "karpathy",
+  "current_org": "Eureka Labs",
+  "job_title": "AI Researcher",
+  "start_dt": "garbage-date",
+  "location_raw": "Palo Alto, US",
+  "tech_skills": ["python", "pytorch", "cuda"],
+  "education": null
+}

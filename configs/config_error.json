@@ -1,0 +1,9 @@
+{
+  "fields": [
+    { "path": "candidate_name", "from": "full_name", "type": "string" },
+    { "path": "linkedin_url", "from": "links.linkedin", "type": "string", "required": true }
+  ],
+  "include_confidence": false,
+  "include_provenance": false,
+  "on_missing": "null"
+}

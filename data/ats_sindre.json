@@ -1,0 +1,20 @@
+{
+  "emp_name_first": "Sindre",
+  "emp_name_last": "Sorhus",
+  "contact_email": "sindre@example.com",
+  "contact_phone": "(415) 555-2671",
+  "github_username": "sindresorhus",
+  "current_org": "Open Source",
+  "job_title": "Software Engineer",
+  "start_dt": "2020-01-15T00:00:00Z",
+  "location_raw": "San Francisco, US",
+  "tech_skills": ["javascript", "python", "postgresql"],
+  "education": [
+    {
+      "school": "Stanford University",
+      "deg": "Bachelor of Science",
+      "major": "Computer Science",
+      "grad_year": 2018
+    }
+  ]
+}

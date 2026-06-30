@@ -1,0 +1,13 @@
+{
+  "fields": [
+    { "path": "candidate_name", "from": "full_name", "type": "string", "required": true },
+    { "path": "best_email", "from": "emails[0]", "type": "string" },
+    { "path": "linkedin_url", "from": "links.linkedin", "type": "string" },
+    { "path": "city", "from": "location.city", "type": "string" },
+    { "path": "top_skill", "from": "skills[0].name", "type": "string" },
+    { "path": "all_companies", "from": "experience[].company", "type": "string[]" }
+  ],
+  "include_confidence": true,
+  "include_provenance": true,
+  "on_missing": "null"
+}

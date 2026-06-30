@@ -1,0 +1,11 @@
+{
+  "fields": [
+    { "path": "candidate_name", "from": "full_name", "type": "string", "required": true },
+    { "path": "linkedin_url", "from": "links.linkedin", "type": "string" },
+    { "path": "portfolio_site", "from": "links.portfolio", "type": "string" },
+    { "path": "skills_list", "from": "skills[].name", "type": "string[]", "normalize": "canonical" }
+  ],
+  "include_confidence": true,
+  "include_provenance": false,
+  "on_missing": "omit"
+}

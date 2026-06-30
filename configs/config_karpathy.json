@@ -1,0 +1,21 @@
+{
+  "fields": [
+    { "path": "name", "from": "full_name", "type": "string", "required": true },
+    { "path": "bio", "from": "headline", "type": "string" },
+    { "path": "contact_email", "from": "emails[0]", "type": "string", "normalize": "email" },
+    { "path": "contact_phone", "from": "phones[0]", "type": "string", "normalize": "E164" },
+    { "path": "based_in", "from": "location.city", "type": "string" },
+    { "path": "country_code", "from": "location.country", "type": "string" },
+    { "path": "experience_start", "from": "experience[0].start", "type": "string", "normalize": "date" },
+    { "path": "current_employer", "from": "experience[0].company", "type": "string" },
+    { "path": "all_skills", "from": "skills[].name", "type": "string[]", "normalize": "canonical" },
+    { "path": "top_3_skills", "from": "skills[:3].name", "type": "string[]" },
+    { "path": "school_attended", "from": "education[0].institution", "type": "string" },
+    { "path": "years_in_field", "from": "years_experience", "type": "number" },
+    { "path": "github_link", "from": "links.github", "type": "string" },
+    { "path": "linkedin_link", "from": "links.linkedin", "type": "string" }
+  ],
+  "include_confidence": true,
+  "include_provenance": true,
+  "on_missing": "null"
+}
