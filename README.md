@@ -105,3 +105,47 @@ python main.py --ats data/ats_karpathy.json --github karpathy --config configs/c
 ```
 ## Architecture
 ![System Architecture](assets/pipeline.png)
+
+## Canonical Output Schema
+
+| Canonical Field Path | Normalization / Validation Standard |
+|---------------------|-------------------------------------|
+| `candidate_id` | Truncated 12-char MD5 hash of primary email |
+| `full_name` \| `headline` | Whitespace trimmed; "N/A" strings zeroed out |
+| `emails[]` \| `phones[]` | Lowercased emails; E.164 phone format constraint |
+| `location` | Country code forced to ISO-3166 alpha-2 (caps) |
+| `links` | URL strings parsed and isolated by domain |
+| `years_experience` | Non-negative values; fallback to GitHub account age |
+| `skills[]` | Lowercased, alphanumeric, version-stripped tokens |
+| `experience[]` \| `education[]` | All internal date tokens formatted strictly to YYYY-MM |
+| `provenance[]` \| `overall_confidence` | Audited field histories; mean of active metrics |
+
+## Merge Engine & Conflict Resolution
+
+### 1. Core Scoring
+Every valid piece of data earns a final confidence score ($S_{final}$) based on how much we trust its source, plus a bonus if it passes strict validation checks.
+
+* Formula:
+$$S_{final} = \min(1.0, W_{base} + B_{format})$$
+* Base Weights ($W_{base}$): ATS = 0.75, GitHub = 0.60.
+* Format Bonuses ($B_{format}$): Clean data is rewarded: E.164 Phone (+0.15), Email (+0.10), ISO-2 Country / YYYY-MM Date (+0.08).
+* Garbage Penalty: Null, empty, or "N/A" values are instantly zeroed out ($S_{final} = 0.0$).
+
+### 2. Single-Value Survivorship (Conflict Resolution)
+When sources disagree on a field that can only have one true answer (like a candidate's name or country), the engine simply picks the value with the highest mathematical proof of quality.
+
+* Logic:
+$$Winner = \max(S_{ats}, S_{github})$$
+* Tie-Breaker: In the event of a mathematical tie, the system defaults to the structured, formal ATS data.
+
+### 3. Multi-Value Deduplication (Array Merging)
+For lists (like skills), the engine combines everything into one master list. Unique skills keep their original $S_{final}$. However, if a skill is verified by both sources, it receives a cross-validation boost:
+
+* Confidence Boost:
+$$S_{boosted} = \min(1.0, \max(S_{ats}, S_{github}) + 0.1)$$
+
+### 4. Deterministic Identity (Candidate Identification)
+To ensure stable tracking across systems without relying on external databases, the pipeline assigns a unique, reproducible identifier to every merged profile.
+
+* Logic: The `candidate_id` is generated as a truncated 12-character MD5 hash of the candidate's primary email.
+* Fallback: If no email exists, the engine hashes their lowercase full name instead.
