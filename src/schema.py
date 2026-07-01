@@ -1,8 +1,6 @@
 """
 schema.py
----------
-Canonical Golden Record schema for the Eightfold candidate data transformer.
-Every other module writes to and reads from these models.
+Canonical Golden Record schema.
 """
 
 from __future__ import annotations
@@ -11,10 +9,7 @@ from pydantic import BaseModel, EmailStr, field_validator
 import re
 
 
-# ---------------------------------------------------------------------------
 # Sub-models
-# ---------------------------------------------------------------------------
-
 class Location(BaseModel):
     city:    Optional[str] = None
     region:  Optional[str] = None
@@ -56,10 +51,7 @@ class ProvenanceEntry(BaseModel):
     confidence_score: float                # 0.0 – 1.0
 
 
-# ---------------------------------------------------------------------------
 # Top-level Golden Record
-# ---------------------------------------------------------------------------
-
 class GoldenRecord(BaseModel):
     candidate_id:       str
     full_name:          Optional[str]           = None
@@ -75,9 +67,6 @@ class GoldenRecord(BaseModel):
     provenance:         List[ProvenanceEntry]   = []
     overall_confidence: float                   = 0.0
 
-    # ------------------------------------------------------------------
-    # Validators
-    # ------------------------------------------------------------------
 
     @field_validator("emails", mode="before")
     @classmethod

@@ -1,7 +1,6 @@
 """
 ats_extractor.py
 Maps a raw ATS JSON blob to canonical fields.
-To support a new ATS vendor, add a new mapping dict and pass it in.
 """
 
 from __future__ import annotations
@@ -13,7 +12,6 @@ from src.normalizers import (
 )
 
 
-# Field mapping for our sample ATS schema
 _ATS_MAP = {
     "first_name": "emp_name_first",
     "last_name":  "emp_name_last",
@@ -30,7 +28,6 @@ _ATS_MAP = {
 
 
 def _get(blob: dict, key: str):
-    """Pull a value by its ATS-specific key, return None if missing."""
     return blob.get(_ATS_MAP.get(key, key))
 
 

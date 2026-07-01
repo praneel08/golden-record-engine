@@ -54,10 +54,6 @@ def _extract_skills(username: str) -> list[str]:
 
 
 def extract(username: str) -> Optional[dict]:
-    """
-    Fetch a GitHub profile by username, return normalized intermediate dict.
-    Returns None if the profile is unreachable or unusable.
-    """
     if not username:
         return None
 

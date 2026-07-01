@@ -1,8 +1,5 @@
 """
 merger.py
----------
-Golden Record Engine. Resolves conflicts between ATS and GitHub using
-S_final = W_base + M_dynamic (field-specific bonuses, capped at 1.0).
 """
 
 from __future__ import annotations
@@ -23,11 +20,7 @@ _YYYYMM  = re.compile(r"^\d{4}-\d{2}$")
 _ISO2    = re.compile(r"^[A-Z]{2}$")
 _SKILL   = re.compile(r"^[a-z][a-z0-9+#.\-]*$")  # lowercase, no version numbers
 
-
-# ---------------------------------------------------------------------------
 # Field-specific format bonuses
-# ---------------------------------------------------------------------------
-
 def _format_bonus(value, field_type: str) -> float:
     """Return the format bonus for a value based on its field type."""
     if field_type == "phone":
@@ -47,10 +40,7 @@ def _format_bonus(value, field_type: str) -> float:
     return 0.0
 
 
-# ---------------------------------------------------------------------------
 # Core scoring
-# ---------------------------------------------------------------------------
-
 def _is_garbage(value) -> bool:
     """Garbage penalty: None, empty, whitespace, 'N/A', empty list, number <= 0."""
     if value is None:
@@ -75,11 +65,7 @@ def _score(value, source: str, field_type: str) -> float:
     bonus = _format_bonus(value, field_type)
     return min(1.0, base + bonus)
 
-
-# ---------------------------------------------------------------------------
 # Scalar resolver
-# ---------------------------------------------------------------------------
-
 def _resolve(field: str, field_type: str,
              ats_val, gh_val,
              provenance: list,
@@ -108,9 +94,7 @@ def _resolve(field: str, field_type: str,
     return winner, round(score, 4)
 
 
-# ---------------------------------------------------------------------------
 # List resolver (skills)
-# ---------------------------------------------------------------------------
 
 def _resolve_skills(ats_skills: list, gh_skills: list, provenance: list) -> list[Skill]:
     """
@@ -151,9 +135,7 @@ def _resolve_skills(ats_skills: list, gh_skills: list, provenance: list) -> list
     return result
 
 
-# ---------------------------------------------------------------------------
 # Blocking
-# ---------------------------------------------------------------------------
 
 def block(ats: Optional[dict], github: Optional[dict]) -> dict:
     """Match ATS + GitHub to same candidate. Email first, name fallback."""
@@ -170,9 +152,7 @@ def block(ats: Optional[dict], github: Optional[dict]) -> dict:
     return {"ats": ats, "github": github, "block_key": key}
 
 
-# ---------------------------------------------------------------------------
 # Main merge
-# ---------------------------------------------------------------------------
 
 def merge(ats: Optional[dict], github: Optional[dict]) -> GoldenRecord:
     """

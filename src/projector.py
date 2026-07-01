@@ -1,8 +1,5 @@
 """
 projector.py
-------------
-Config-driven projection layer. Takes a GoldenRecord + a runtime config,
-reshapes it into whatever output the config asks for. Same engine, no code changes.
 """
 
 from __future__ import annotations
@@ -11,9 +8,7 @@ from typing import Any
 from src.normalizers import normalize_phone, normalize_skill, normalize_email, normalize_date
 
 
-# ---------------------------------------------------------------------------
 # Normalization registry — maps config "normalize" values to functions
-# ---------------------------------------------------------------------------
 
 _NORMALIZERS = {
     "E164":      lambda v: normalize_phone(v) if isinstance(v, str) else v,
@@ -47,9 +42,8 @@ def _is_empty(value: Any) -> bool:
     return False
 
 
-# ---------------------------------------------------------------------------
+
 # Confidence lookup
-# ---------------------------------------------------------------------------
 
 def _find_confidence(record_dict: dict, field_path: str) -> float | None:
     """Look up a field's confidence score from the provenance array."""
@@ -69,9 +63,7 @@ def _find_provenance(record_dict: dict, field_path: str) -> dict | None:
     return None
 
 
-# ---------------------------------------------------------------------------
 # Lightweight output validation
-# ---------------------------------------------------------------------------
 
 _TYPE_CHECKS = {
     "string":   lambda v: isinstance(v, str),
@@ -95,23 +87,10 @@ def _validate_field(out_path, value, declared_type):
         )
 
 
-# ---------------------------------------------------------------------------
 # Main projection function
-# ---------------------------------------------------------------------------
 
 def project(record_dict: dict, config: dict) -> dict:
-    """
-    Reshape a canonical record dict per the runtime config.
 
-    config = {
-        "fields": [
-            { "path": "...", "from": "...", "type": "...",
-              "required": bool, "normalize": "..." }
-        ],
-        "include_confidence": bool,
-        "on_missing": "null" | "omit" | "error"
-    }
-    """
     on_missing = config.get("on_missing", "null")
     include_confidence = config.get("include_confidence", False)
     include_provenance = config.get("include_provenance", False)

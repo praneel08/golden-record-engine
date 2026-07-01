@@ -5,7 +5,7 @@
     { "path": "phone", "from": "phones[0]", "type": "string", "normalize": "E164" },
     { "path": "skills", "from": "skills[].name", "type": "string[]", "normalize": "canonical" }
   ],
-  "include_confidence": true,
+  "include_confidence": false,
   "include_provenance": true,
   "on_missing": "null"
 }

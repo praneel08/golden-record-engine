@@ -1,8 +1,5 @@
 """
 test_projector.py
-------------------
-Runs the merged sindre+github record through all three on_missing config modes.
-Run from project root: python tests/test_projector.py
 """
 
 import sys, json

@@ -1,9 +1,5 @@
 """
 test_projector_torvalds.py
----------------------------
-Runs the merged Jonathan Doe + torvalds record through the assignment's
-example config (full_name, primary_email, phone, skills with confidence+provenance).
-Run from project root: python tests/test_projector_torvalds.py
 """
 
 import sys, json

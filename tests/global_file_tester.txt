@@ -1,0 +1,1 @@
+python main.py --ats "C:\Users\HP\OneDrive\Pictures\global_path_tests\karpathy\ats_karpathy.json.txt" --github karpathy --config "C:\Users\HP\OneDrive\Pictures\global_path_tests\karpathy\config_karpathy.json.txt"

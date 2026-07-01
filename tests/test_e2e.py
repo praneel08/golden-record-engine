@@ -1,8 +1,5 @@
 """
 test_e2e.py
------------
-End-to-end pipeline test: real ATS blob + live GitHub API → GoldenRecord.
-Run from project root: python tests/test_e2e.py
 """
 
 import sys, json
