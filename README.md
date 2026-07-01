@@ -149,3 +149,46 @@ To ensure stable tracking across systems without relying on external databases, 
 
 * Logic: The `candidate_id` is generated as a truncated 12-character MD5 hash of the candidate's primary email.
 * Fallback: If no email exists, the engine hashes their lowercase full name instead.
+
+## Configurable Output Layer
+
+Once the Golden Record is built, a runtime config file can reshape the output without touching any pipeline code. Pass it via `--config` and the projection layer takes over.
+
+### What the config controls
+
+| Option | What it does |
+|--------|-------------|
+| `fields[].path` | Name of the field in the final output |
+| `fields[].from` | JMESPath expression to extract from the canonical record |
+| `fields[].type` | Expected type — validated before output (`string`, `number`, `string[]`, `object`) |
+| `fields[].required` | If `true`, missing value always raises an error regardless of `on_missing` |
+| `fields[].normalize` | Apply a normalizer on the extracted value (`E164`, `canonical`, `email`, `date`) |
+| `include_confidence` | toggles a `_confidence` block with per-field scores |
+| `include_provenance` | toggles a `_provenance` block with source and method per field |
+| `on_missing` | What to do when a value is empty: `null`, `omit`, or `error` |
+
+### Example config
+
+```json
+{
+  "fields": [
+    { "path": "full_name", "type": "string", "required": true },
+    { "path": "primary_email", "from": "emails[0]", "type": "string", "required": true },
+    { "path": "phone", "from": "phones[0]", "type": "string", "normalize": "E164" },
+    { "path": "skills", "from": "skills[].name", "type": "string[]", "normalize": "canonical" }
+  ],
+  "include_confidence": true,
+  "include_provenance": true,
+  "on_missing": "null"
+}
+```
+
+### on_missing behaviour
+
+| Value | Behaviour |
+|-------|-----------|
+| `null` | Field is included in output with value `null` |
+| `omit` | Field is dropped entirely from output |
+| `error` | Pipeline halts with a clear error message |
+
+The `required: true` flag overrides `on_missing` — a required field that is missing always raises an error.
