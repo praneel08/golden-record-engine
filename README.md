@@ -4,13 +4,28 @@ A pipeline that ingests candidate data from an ATS JSON blob (structured) and a 
 
 ---
 
-## Setup — Run on Your Own Machine
+## Setup 
 
 **1. Clone the repo**
 ```bash
 git clone https://github.com/praneel08/golden-record-engine.git
 cd golden-record-engine
 ```
+**(Optional) Create a virtual environment first:**
+
+Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+Mac/Linux:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+Then continue with `pip install -r requirements.txt` as normal.
 
 **2. Install dependencies**
 ```bash
