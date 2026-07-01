@@ -88,3 +88,5 @@ Tests configurable outputs with complex querying like array slicing and nested f
 ```bash
 python main.py --ats data/ats_karpathy.json --github karpathy --config configs/config_karpathy.json
 ```
+## Architecture
+![System Architecture](assets/pipeline.png)
